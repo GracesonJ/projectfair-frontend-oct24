@@ -4,18 +4,31 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Link } from 'react-router-dom'
 import photo from '../assets/image.svg'
 import ProjectCard from '../Components/ProjectCard'
+import { getHomeProjectAPI } from '../services/allApi'
 
 function Home() {
 
   const [isLogin, setIsLogin] = useState(false)
+  const [homeProjects, SetHomeProjects] = useState([])
 
-  useEffect(()=>{
-    if(sessionStorage.getItem("token")){
+  const getHomeProjects = async () => {
+    const result = await getHomeProjectAPI()
+    // console.log(result);
+    SetHomeProjects(result.data)
+
+  }
+  console.log(homeProjects);
+
+
+  useEffect(() => {
+    getHomeProjects()
+    if (sessionStorage.getItem("token")) {
       setIsLogin(true)
-    }else{
+    } else {
       setIsLogin(false)
     }
-  })
+  }, [])
+
   return (
     <>
       <div style={{ height: "100vh" }} className='bg-success p-5'>
@@ -26,7 +39,7 @@ function Home() {
               <p>One stop destination for all software development Projects</p>
 
               {isLogin == false ? <Link to={'/login'}><button className='btn text-light p-1 mt-3'>Get Started <FontAwesomeIcon icon={faArrowRight} /></button></Link> :
-              <Link to={'/dashboard'}><button className='btn text-light p-1 mt-3'>Manage Projects <FontAwesomeIcon icon={faArrowRight} /></button></Link>}
+                <Link to={'/dashboard'}><button className='btn text-light p-1 mt-3'>Manage Projects <FontAwesomeIcon icon={faArrowRight} /></button></Link>}
 
             </div>
             <div className="col-md-6 mt-5 mt-md-0 d-flex justify-content-center">
@@ -43,15 +56,12 @@ function Home() {
         <div className="container mt-5">
           <div className="row">
 
-            <div className="col-md-4">
-              <ProjectCard />
-            </div>
-            <div className="col-md-4">
-              <ProjectCard />
-            </div>
-            <div className="col-md-4">
-              <ProjectCard />
-            </div>
+            {homeProjects?.map((item) => (
+              <div className="col-md-4">
+                <ProjectCard  projects={item} />
+              </div>
+            ))
+            }
 
           </div>
         </div>

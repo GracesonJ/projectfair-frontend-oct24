@@ -30,7 +30,6 @@ function Projects() {
     getAllProjects()
     if (sessionStorage.getItem("token")) {
       setToken(sessionStorage.getItem("token"))
-
     }
   }, [searchKey])
 
@@ -44,7 +43,7 @@ function Projects() {
             <div className="row">
               <div className="col-md-4"></div>
               <div className="col-md-4 d-flex">
-                <input onChange={(e)=>setSearchKey(e.target.value)} type="text" className='form-control shadow' placeholder='Technoligies' />
+                <input onChange={(e) => setSearchKey(e.target.value)} type="text" className='form-control shadow' placeholder='Technoligies' />
                 <FontAwesomeIcon style={{ color: "lightgrey", marginTop: "11px", marginLeft: "-30px" }} icon={faSearchengin} />
               </div>
               <div className="col-md-4"></div>
@@ -61,7 +60,7 @@ function Projects() {
           </div>
         </div>
         :
-        <h1>Please Login to See more Projects</h1>}
+        <h1 className='text-danger text-center'>Please Login to See more Projects</h1>}
     </>
   )
 }

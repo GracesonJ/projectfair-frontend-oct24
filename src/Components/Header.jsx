@@ -1,12 +1,32 @@
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { faStackOverflow } from '@fortawesome/free-brands-svg-icons';
 import { faPowerOff } from '@fortawesome/free-solid-svg-icons/faPowerOff';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Container } from 'react-bootstrap';
 import Navbar from 'react-bootstrap/Navbar';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { loginResponseContext } from '../context/ContextShare';
 
 function Header() {
+
+  const {setLoginResponse} = useContext(loginResponseContext)
+  const [token, setToken] = useState("")
+  const navigate = useNavigate()
+  useEffect(() => {
+    if (sessionStorage.getItem("token")) {
+      setToken(sessionStorage.getItem("token"))
+    }
+  })
+
+  const handleLogout = ()=>{
+    alert(  `Logout successfully`)
+    sessionStorage.removeItem("existingUser")
+    sessionStorage.removeItem("token")
+    setLoginResponse(false)
+    navigate('/')
+  }
+
+
   return (
     <>
 
@@ -17,7 +37,7 @@ function Header() {
               <span className='fs-3'> <FontAwesomeIcon className='me-3 ' icon={faStackOverflow} />Project Fair</span>
             </Navbar.Brand>
           </Link>
-          <button className='btn btn-warning ms-auto rounded-0'><FontAwesomeIcon icon={faPowerOff} className='me-2' />Logout</button>
+          {token && <button onClick={handleLogout} className='btn btn-warning ms-auto rounded-0'><FontAwesomeIcon icon={faPowerOff} className='me-2' />Logout</button>}
         </Container>
       </Navbar>
 
